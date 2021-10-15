@@ -1,26 +1,12 @@
 node('master')
 {
-    stage('ContinousDownload_master')
+    stage('ContinousDownload_sai')
     {
     git 'https://github.com/intelliqittrainings/maven.git'
 }
-stage('ContinousBuild_master')
+stage('ContinousBuild_sai')
 {
     sh 'mvn package'
-}
-stage('continousDeploy_master')
-{
-    deploy adapters: [tomcat9(credentialsId: 'd82cc556-315f-4064-8c85-a0a8a7af48b0', path: '', url: 'http://172.31.15.163:8080')], contextPath: 'poco', war: '**/*.war'
-}
-stage('continoustesting_master')
-{
-git 'https://github.com/intelliqittrainings/FunctionalTesting.git'
-sh 'java -jar /home/ubuntu/.jenkins/workspace/scriptedpipeline@2/testing.jar'
-}
-stage('continousdelivery_master')
-{
-    input message: 'Waiting for Approval from the delivery manager', submitter: 'kiran'
-    deploy adapters: [tomcat9(credentialsId: 'd82cc556-315f-4064-8c85-a0a8a7af48b0', path: '', url: 'http://172.31.6.85:8080')], contextPath: 'pocoprod', war: '**/*.war'
 }
 }
 
